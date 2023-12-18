@@ -14,15 +14,20 @@ public class Main {
         Card[] computerDeck = new Card[10];
         Card[] userDeck = new Card[10];
 
+        Card[] computerHand = new Card[4];
+        Card[] userHand = new Card[4];
+
 
         int l = 0;
         for (int i = 0; i < gameDeckColor.length; i++) {
             for (int j = 0; j < gameDeck.length; j++) {
-                Deck[l++] = new Card(gameDeckColor[i], gameDeck[j]);
+                Deck[l++] = new Card(gameDeckColor[i], gameDeck[j], 1);
             }
         }
         System.out.println("**********  The deck is shuffling... **********");
         System.out.println();
+
+
         Shuffle(Deck);
         for (int c = 0; c < Deck.length; c++) {
             System.out.println(Deck[c]);
@@ -36,95 +41,88 @@ public class Main {
 
         int[] remainingCard = {1, 2, 3, 4, 5, 6};
         int [] sign = {-1, +1};
-        RemainingCard[] remainingDeck = new RemainingCard[48];  // 4 different colors, numbers 1 to 6 and 2 different signs
 
-        int m = 0;
-        for (int i = 0; i < gameDeckColor.length; i++) {
-            for (int j = 0; j < remainingCard.length; j++) {
-                for (int k = 0; k < sign.length; k++) {
-                    remainingDeck[m++] = new RemainingCard(gameDeckColor[i], remainingCard[j], sign[k]);
-                }
-            }
+        System.out.println();
+
+        //Player's remain cards (with sign)
+        System.out.println("Player's Remain Cards are ");
+        for (int i=0; i<3; i++) {
+            //remainRandomCard(gameDeckColor, remainingCard, sign);
+            userDeck[i+5] = remainRandomCard(gameDeckColor, remainingCard, sign);
         }
 
         System.out.println();
-        System.out.println("**********  Remaining cards are shuffling...  **********");
-        ShuffleRemain(remainingDeck);
-        for (int r = 0; r < remainingDeck.length; r++) {
-            System.out.println(remainingDeck[r]);
+
+        //Computer's remain cards (with sign)
+        System.out.println("Computer's Remain Cards are ");
+        for (int i=0; i<3; i++) {
+            //remainRandomCard(gameDeckColor, remainingCard, sign);
+            computerDeck[i+5] = remainRandomCard(gameDeckColor, remainingCard, sign);
         }
 
         System.out.println("********************");
 
-        // Dealing the remaining 3 cards to the computer and user
-        RemainingCard [] computerRemainingDeck = new RemainingCard[3];
-        RemainingCard [] userRemainingDeck = new RemainingCard[3];
 
-        RemainingCard [] computerSpecial = new RemainingCard[1];
-        RemainingCard [] userSpecial = new RemainingCard[1];
-
-        ShuffleRemain(remainingDeck);
-        for (int i=0; i<3; i++){
-            userRemainingDeck[i] = remainingDeck[i];
-            userRemainingDeck[i].decreaseRemainingCard();  // kart çekildiğinde sayacı azaltması için
-            computerRemainingDeck[i] =remainingDeck[i+3];
-            computerRemainingDeck[i].decreaseRemainingCard(); // kart çekildiğinde sayacı azaltması için
-        }
-
-        System.out.println();
-        System.out.println("Player's Remaining Cards: ");
-        for (int i=0; i<userRemainingDeck.length; i++){
-            System.out.println(userRemainingDeck[i]);
-            userRemainingDeck[i].decreaseRemainingCard();   // her seferinde sayacı azaltıyor
-        }
-
-        System.out.println();
-
-        System.out.println("Computer's Remaining Cards: ");
-        for (int i=0; i<userRemainingDeck.length; i++){
-            System.out.println(computerRemainingDeck[i]);
-            computerRemainingDeck[i].decreaseRemainingCard();   // her seferinde sayacı azaltıyor
-        }
-
-        
-        System.out.println("********************");
-
-        String flip= "+/-";
-        int db= 1*2;
+        //String [] flip = {"+/-"};
+        //String [] db = {"x2"};
         Random r = new Random ();
+
+        // for user
         for (int i=0; i<2; i++){
-           int a  = r.nextInt(10);
-           System.out.println("Randomly selected card is " + a);
+            int a  = r.nextInt(10);
+            System.out.println("* Randomly selected card is " + a + " *");
+            System.out.println();
 
-           if (a==0){
-               System.out.println("It is flip card! " + flip);
-           } else if (a==1){
-               System.out.println("It is double card! " + db);
-           } else {
-               Special(remainingDeck);
-               for (int s=0; s<1; s++){
-                   userSpecial[s] = remainingDeck[s];
-                   userSpecial[s].decreaseRemainingCard();  // kart çekildiğinde sayacı azaltması için???????????
-                   computerSpecial[s] =remainingDeck[s+3];
-                   computerSpecial[s].decreaseRemainingCard(); // kart çekildiğinde sayacı azaltması için
-               }
 
-               System.out.println();
-               System.out.println("Player's Remaining Cards: ");
-               for (int j=0; j<userSpecial.length; j++){
-                   System.out.println(userSpecial[j]);
-                   userSpecial[j].decreaseRemainingCard();
-               }
+            if (a==0){
+                System.out.println("Player's Remaining Card is flip card! ");
+                userDeck[i+8] = new Card ("flip");
 
-               System.out.println();
+            } else if (a==1){
+                System.out.println("Player's Remaining Card is double card! ");
+                userDeck[i+8] = new Card("double");
 
-               System.out.println("Computer's Remaining Cards: ");
-               for (int k=0; k<computerSpecial.length; k++){
-                   System.out.println(computerSpecial[k]);
-                   computerSpecial[k].decreaseRemainingCard();
-               }
-           }
+            } else {
+                System.out.println("Player's Remain Card is ");
+                // remainRandomCard(gameDeckColor, remainingCard, sign);
+                userDeck [i+8] = remainRandomCard(gameDeckColor, remainingCard, sign);
+            }
+            System.out.println();
         }
+
+        // for computer
+        for (int i=0; i<2; i++) {
+            int b = r.nextInt(10);
+            System.out.println("* Randomly selected card is " + b + " *");
+            System.out.println();
+
+            if (b == 0) {
+                System.out.println("Computer's Remaining Card is flip card! ");
+                computerDeck[i+8] = new Card ("flip");
+            } else if (b == 1) {
+                System.out.println("Computer's Remaining Card is double card! ");
+                computerDeck[i+8] = new Card("double");
+            } else {
+                System.out.println("Computer's Remain Card is ");
+                //remainRandomCard(gameDeckColor, remainingCard, sign);
+                computerDeck [i+8] = remainRandomCard(gameDeckColor, remainingCard, sign);
+            }
+            System.out.println();
+        }
+
+        fourCards(computerDeck,userDeck, computerHand, userHand);
+
+        System.out.println();
+
+        System.out.println("*** After the player and the computer are given 5 cards, the remaining game cards are as follows: ***");
+        for (int i = Deck.length-35; i < Deck.length-5 ; i++) {
+            System.out.println(Deck[i]);
+        }
+
+        System.out.println("THE GAME BEGINS ");
+
+
+
     }
     public static void Shuffle(Card[] Deck) {
         Random r = new Random();
@@ -132,11 +130,6 @@ public class Main {
             int a = r.nextInt(Deck.length);
             int b = r.nextInt(Deck.length);
             Swap(Deck, a, b);
-            /*
-            Card temp = Deck[a];
-            Deck[a] = Deck[b];
-            Deck[b] = temp;
-             */
         }
     }
 
@@ -154,47 +147,89 @@ public class Main {
         for (int j=0; j<5; j++){
             // The card at the top is given to the computer.
             computerDeck[j] = Deck[j];
-            computerDeck[j].decreaseRemainingCount();   // kart çekildikten sonra sayacı azzaltıyor
-            System.out.println("Computer Deck is = " + computerDeck[j]);
+            System.out.println("Computer Cards are = " + computerDeck[j]);
         }
         System.out.println("********************");
         for (int k=Deck.length-1; k>=Deck.length-5; k--){
             // The card at the bottom is given to the user.
             userDeck[39-k] = Deck [k];
-            userDeck[39-k].decreaseRemainingCount();   // kart çekildikten sonra sayacı azzaltıyor
-            System.out.println("User Deck is = " + userDeck[39-k]);
+            System.out.println("Player Cards are = " + userDeck[39-k]);
         }
     }
 
-    public static void ShuffleRemain(RemainingCard[] remainingDeck){
+    public static Card remainRandomCard(String[] colors, int[] values, int [] signs) {
         Random r = new Random();
-        for (int s = 0; s < remainingDeck.length; s++) {
-            int a = r.nextInt(remainingDeck.length);
-            int b = r.nextInt(remainingDeck.length);
-            int c = r.nextInt(remainingDeck.length);
 
-            RemainingCard temp = remainingDeck[a];
-            remainingDeck[a] = remainingDeck[b];
-            remainingDeck[b] = remainingDeck[c];
-            remainingDeck[c] = temp;
+        String color = colors[r.nextInt(colors.length)];
+        int value = values[r.nextInt(values.length)];
+        int sign = signs[r.nextInt(signs.length)];
+        Card card1 = new Card(color, value, sign);
+        System.out.println(card1);
+        return card1;
 
-        }
     }
-    public static void Special (RemainingCard[] remainingDeck){
+    public static void fourCards(Card[] computerDeck,Card[] userDeck, Card[] computerHand,Card[] userHand ){
         Random r = new Random();
-        for (int i = 0; i < remainingDeck.length; i++) {
-            int a = r.nextInt(remainingDeck.length);
+        System.out.println("Total 10 arrays for computer : ");
+        for (int i=0; i< computerDeck.length; i++){
+            System.out.println(computerDeck[i]);
+        }
 
-            RemainingCard temp = remainingDeck[a];
-            remainingDeck[a] = temp;
+        shuffleTenCards(computerDeck,userDeck);  //To prevent the same two numbers from coming randomly, we mix the numbers and print the first four
+        System.out.println();
+        System.out.println("Shuffling the computer deck: ");
+        for (int c = 0; c < computerDeck.length; c++) {     // Checking to see if it is shuffled
+            System.out.println(computerDeck[c]);
+            System.out.println();
+        }
+
+        System.out.println("The four cards chosen for the computer are: ");
+        for (int a=0; a<computerHand.length; a++){
+            System.out.println(computerDeck[a]);
+        }
+
+        System.out.println();
+        System.out.println("********************");
+        System.out.println();
+
+        System.out.println("Total 10 arrays for player : ");
+        for (int i=0; i< userDeck.length; i++){
+            System.out.println(userDeck[i]);
+        }
+
+        shuffleTenCards(computerDeck,userDeck); //To prevent the same two numbers from coming randomly, we mix the numbers and print the first four
+        System.out.println();
+        System.out.println("Shuffling the player deck: ");
+        for (int c = 0; c < userDeck.length; c++) {     // Checking to see if it is shuffled
+            System.out.println(userDeck[c]);
+            System.out.println();
+        }
+        System.out.println();
+
+        System.out.println("The four cards chosen for the player are: ");
+        for (int a=0; a<userHand.length; a++) {
+            System.out.println(userDeck[a]);
         }
     }
 
-  /*  public static void fourCards (Card [] Deck, RemainingCard[] remainingDeck, Card [] computerDeck, Card [] userDeck, RemainingCard [] computerRemainingDeck, RemainingCard [] userRemainingDeck){
+    public static void shuffleTenCards(Card [] computerDeck,Card [] userDeck){
+        Random r = new Random();
+        for (int i = 0; i < computerDeck.length; i++) {
+            int a = r.nextInt(computerDeck.length);
+            int b = r.nextInt(computerDeck.length);
+            Card temp = computerDeck[a];
+            computerDeck[a] = computerDeck[b];
+            computerDeck[b] = temp;
+        }
 
+        for (int i = 0; i < userDeck.length; i++) {
+            int c = r.nextInt(userDeck.length);
+            int d = r.nextInt(userDeck.length);
+            Card temp = userDeck[c];
+            userDeck[c] = userDeck[d];
+            userDeck[d] = temp;
+        }
     }
-
-   */
 }
 
 
