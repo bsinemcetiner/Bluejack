@@ -1,4 +1,5 @@
 import java.util.Random;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
@@ -118,11 +119,38 @@ public class Main {
         for (int i = Deck.length-35; i < Deck.length-5 ; i++) {
             System.out.println(Deck[i]);
         }
+        System.out.println();
+        System.out.println("---------- THE GAME BEGINS ----------");
+        System.out.println();
 
-        System.out.println("THE GAME BEGINS ");
+        int userPoint = 0;
+        int computerPoint = 0;
+        int userBoard = 0;
+        int computerBoard = 0;
 
+        System.out.println("First, it is the player's turn and then it is the computer's turn.");
+        System.out.println("If you want to draw a card from the game deck, enter 1");
+        System.out.println("If you want your turn to end, enter 2");
+        System.out.println("If you choose to stand, press 3 (if you stand, the turn passes to the other player)");
+        Scanner sc = new Scanner(System.in);
 
+        while (userPoint<3 && computerPoint<3){
+            System.out.println();
 
+            for (int i=0; i<userHand.length; i++) {
+                System.out.println("Player's hand is: " + userHand[i]);
+               // userHand[i] = fourCards(computerDeck,userDeck, computerHand, userHand);
+              //fourCards(computerDeck,userDeck, computerHand, userHand);
+               // System.out.println("Player's hand is: " + fourCards(computerDeck,userDeck, computerHand, userHand));
+
+            }
+            System.out.print("Please enter your choice: ");
+            int choice = sc.nextInt();
+
+            if (choice==1){
+
+            }
+        }
     }
     public static void Shuffle(Card[] Deck) {
         Random r = new Random();
@@ -186,6 +214,7 @@ public class Main {
         System.out.println("The four cards chosen for the computer are: ");
         for (int a=0; a<computerHand.length; a++){
             System.out.println(computerDeck[a]);
+            //return computerHand;
         }
 
         System.out.println();
@@ -204,11 +233,11 @@ public class Main {
             System.out.println(userDeck[c]);
             System.out.println();
         }
-        System.out.println();
 
         System.out.println("The four cards chosen for the player are: ");
         for (int a=0; a<userHand.length; a++) {
             System.out.println(userDeck[a]);
+            //return userHand;
         }
     }
 
