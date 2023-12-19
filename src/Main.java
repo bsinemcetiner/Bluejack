@@ -18,7 +18,6 @@ public class Main {
         Card[] computerHand = new Card[4];
         Card[] userHand = new Card[4];
 
-
         int l = 0;
         for (int i = 0; i < gameDeckColor.length; i++) {
             for (int j = 0; j < gameDeck.length; j++) {
@@ -63,17 +62,12 @@ public class Main {
 
         System.out.println("********************");
 
-
-        //String [] flip = {"+/-"};
-        //String [] db = {"x2"};
         Random r = new Random ();
-
         // for user
         for (int i=0; i<2; i++){
             int a  = r.nextInt(10);
             System.out.println("* Randomly selected card is " + a + " *");
             System.out.println();
-
 
             if (a==0){
                 System.out.println("Player's Remaining Card is flip card! ");
@@ -125,8 +119,14 @@ public class Main {
 
         int userPoint = 0;
         int computerPoint = 0;
-        int userBoard = 0;
-        int computerBoard = 0;
+        Card [] userBoard = new Card[9];
+        Card [] computerBoard = new Card[9];
+        /*int gameDeckTop = 4;
+        int userPlace =0;
+        int computerPlace = 0;
+         */
+        int sum = 0;
+
 
         System.out.println("First, it is the player's turn and then it is the computer's turn.");
         System.out.println("If you want to draw a card from the game deck, enter 1");
@@ -134,21 +134,19 @@ public class Main {
         System.out.println("If you choose to stand, press 3 (if you stand, the turn passes to the other player)");
         Scanner sc = new Scanner(System.in);
 
+        for (int i=0; i<userHand.length; i++) {
+            System.out.println("Player's hand is: " + userHand[i]);
+        }
+
         while (userPoint<3 && computerPoint<3){
             System.out.println();
-
-            for (int i=0; i<userHand.length; i++) {
-                System.out.println("Player's hand is: " + userHand[i]);
-               // userHand[i] = fourCards(computerDeck,userDeck, computerHand, userHand);
-              //fourCards(computerDeck,userDeck, computerHand, userHand);
-               // System.out.println("Player's hand is: " + fourCards(computerDeck,userDeck, computerHand, userHand));
-
-            }
             System.out.print("Please enter your choice: ");
             int choice = sc.nextInt();
 
             if (choice==1){
-
+                userBoard[0] = drawTopCard(Deck);
+                System.out.println(userBoard[0]);
+               // sum += userBoard[0];
             }
         }
     }
@@ -214,7 +212,6 @@ public class Main {
         System.out.println("The four cards chosen for the computer are: ");
         for (int a=0; a<computerHand.length; a++){
             System.out.println(computerDeck[a]);
-            //return computerHand;
         }
 
         System.out.println();
@@ -237,8 +234,13 @@ public class Main {
         System.out.println("The four cards chosen for the player are: ");
         for (int a=0; a<userHand.length; a++) {
             System.out.println(userDeck[a]);
-            //return userHand;
+            userHand [0] = userDeck[0];
+            userHand [1] = userDeck[1];
+            userHand [2] = userDeck[2];
+            userHand [3] = userDeck[3];
         }
+        System.out.println("----------------------------");
+        System.out.println();
     }
 
     public static void shuffleTenCards(Card [] computerDeck,Card [] userDeck){
@@ -259,7 +261,25 @@ public class Main {
             userDeck[d] = temp;
         }
     }
+   /* public static void gameDeckTop (Card [] Deck, int gameDeckTop,int userPlace, int computerPlace, Card [] userBoard){
+        if (gameDeckTop < Deck.length-5){
+            userBoard[userPlace] = Deck[gameDeckTop];
+            gameDeckTop++;
+            userPlace++;
+        }
+    }*/
+    public static Card drawTopCard(Card [] Deck) {
+        int gameDeckTop = 4;
+        if (gameDeckTop < Deck.length) {
+            gameDeckTop++;
+            return Deck[gameDeckTop];
+        } else {
+            System.out.println("Cards sold out.");
+            return null;
+        }
+    }
 }
+
 
 
 

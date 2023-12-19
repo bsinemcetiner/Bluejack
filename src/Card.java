@@ -24,4 +24,5 @@ public class Card {
         }
         return gameDeckColor + " " + (gameDeck * sign);
     }
+
 }
