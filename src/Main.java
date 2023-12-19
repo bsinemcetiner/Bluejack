@@ -121,17 +121,13 @@ public class Main {
         int computerPoint = 0;
         Card [] userBoard = new Card[9];
         Card [] computerBoard = new Card[9];
-        /*int gameDeckTop = 4;
-        int userPlace =0;
-        int computerPlace = 0;
-         */
-        int sum = 0;
 
 
         System.out.println("First, it is the player's turn and then it is the computer's turn.");
         System.out.println("If you want to draw a card from the game deck, enter 1");
         System.out.println("If you want your turn to end, enter 2");
-        System.out.println("If you choose to stand, press 3 (if you stand, the turn passes to the other player)");
+        System.out.println("If you want to stand, enter 3 (if you stand, the turn passes to the other player)");
+        System.out.println("If you want to draw a card from the Player Hand in your hand, enter 4");
         Scanner sc = new Scanner(System.in);
 
         for (int i=0; i<userHand.length; i++) {
@@ -145,8 +141,53 @@ public class Main {
 
             if (choice==1){
                 userBoard[0] = drawTopCard(Deck);
-                System.out.println(userBoard[0]);
-               // sum += userBoard[0];
+                //System.out.println(userBoard[0]);
+                System.out.println("Sum = " + sum(userBoard));
+
+                if (sum(userBoard)>20){
+                    System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
+                    break;
+                } /*else if (sum(userBoard)<20){
+                    userBoard[1] = drawTopCard(Deck);
+                    System.out.println(userBoard[1]);
+                    System.out.println("Sum = " + sum(userBoard));
+
+                }*/ else if (sum(userBoard)==20){
+                    System.out.println("You won this set! ");
+                }
+
+            }
+
+            if (choice==2){
+                System.out.println("Your turn is over, it is computer's turn.");
+                break;
+            }
+
+            if (choice==3){
+                System.out.println("It is computer's turn.");
+                System.out.println("Your score is = " + sum(userBoard));
+            }
+
+            if (choice==4){
+                System.out.println("If you want the 1st number, enter 1\n" +
+                        "If you want the 2nd number, enter 2\n" +
+                        "If you want the 3rd number, enter 3\n" +
+                        "If you want the 4th number, enter 4");
+
+                int enter = sc.nextInt();
+                if (enter==1){
+                    System.out.println("The card you choose: " + userHand[0]);
+                    System.out.println("Sum = " + sum(userBoard) + userHand[0]);
+                } else if (enter==2){
+                    System.out.println("The card you choose: " + userHand[1]);
+                    System.out.println("Sum = " + sum(userBoard) + userHand[1]);
+                } else if (enter==3){
+                    System.out.println("The card you choose: " + userHand[2]);
+                    System.out.println("Sum = " + sum(userBoard) + userHand[2]);
+                } else if (enter==4){
+                    System.out.println("The card you choose: " + userHand[3]);
+                    System.out.println("Sum = " + sum(userBoard) + userHand[3]);
+                }
             }
         }
     }
@@ -212,6 +253,10 @@ public class Main {
         System.out.println("The four cards chosen for the computer are: ");
         for (int a=0; a<computerHand.length; a++){
             System.out.println(computerDeck[a]);
+            computerHand[0] = computerDeck[0];
+            computerHand[1] = computerDeck[1];
+            computerHand[2] = computerDeck[2];
+            computerHand[3] = computerDeck[3];
         }
 
         System.out.println();
@@ -269,14 +314,24 @@ public class Main {
         }
     }*/
     public static Card drawTopCard(Card [] Deck) {
-        int gameDeckTop = 4;
-        if (gameDeckTop < Deck.length) {
+       int gameDeckTop=4;
+        if (gameDeckTop < Deck.length-5) {
             gameDeckTop++;
             return Deck[gameDeckTop];
         } else {
             System.out.println("Cards sold out.");
             return null;
         }
+    }
+
+    public static int sum (Card [] userBoard){
+        int sum = 0;
+        for (Card c: userBoard){
+            if (c != null){
+                sum += c.getGameDeck();
+                System.out.println(sum);
+            }
+        } return sum;
     }
 }
 

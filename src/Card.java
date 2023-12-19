@@ -17,6 +17,14 @@ public class Card {
         special = s;
     }
 
+    public void setGameDeck (int gameDeck){
+
+        this.gameDeck = gameDeck;
+    }
+    public int getGameDeck(){
+        return gameDeck;
+    }
+
     @Override
     public String toString() {
         if(!special.equals("")){
@@ -24,5 +32,4 @@ public class Card {
         }
         return gameDeckColor + " " + (gameDeck * sign);
     }
-
 }
