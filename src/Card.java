@@ -24,6 +24,9 @@ public class Card {
     public int getGameDeck(){
         return gameDeck;
     }
+    public int getValue(){
+        return sign*gameDeck;
+    }
 
     @Override
     public String toString() {
