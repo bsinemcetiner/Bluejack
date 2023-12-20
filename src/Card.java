@@ -17,6 +17,10 @@ public class Card {
         special = s;
     }
 
+    public String getSpecial(){
+        return special;
+    }
+
     public void setGameDeck (int gameDeck){
 
         this.gameDeck = gameDeck;
