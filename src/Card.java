@@ -25,9 +25,13 @@ public class Card {
 
         this.gameDeck = gameDeck;
     }
-    public int getGameDeck(){
-        return gameDeck;
+    public int getDouble(){   //double için
+        return gameDeck*sign*2;
     }
+    public int getFlip(){
+        return gameDeck*sign*-1;
+    }
+
     public int getValue(){
         return sign*gameDeck;
     }
