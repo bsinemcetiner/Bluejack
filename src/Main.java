@@ -1,8 +1,5 @@
-import java.io.*;
-import java.util.Formatter;
 import java.util.Random;
 import java.util.Scanner;
-
 public class Main {
     public static void main(String[] args) {
 
@@ -28,7 +25,6 @@ public class Main {
         }
         System.out.println("**********  The deck is shuffling... **********");
         System.out.println();
-
 
         Shuffle(Deck);
         for (int c = 0; c < Deck.length; c++) {
@@ -58,14 +54,14 @@ public class Main {
             computerDeck[i + 5] = remainRandomCard(gameDeckColor, remainingCard, sign);
         }
 
-        System.out.println("********************");
+        System.out.println("--------------------");
 
         Random r = new Random();
         // for user
         for (int i = 0; i < 2; i++) {
             int a = r.nextInt(10);
-            System.out.println("* Randomly selected card is " + a + " *");
             System.out.println();
+            System.out.println("* Randomly selected card is " + a + " *");
 
             if (a == 0) {
                 System.out.println("Player's Remaining Card is flip card! ");
@@ -79,14 +75,14 @@ public class Main {
                 System.out.println("Player's Remain Card is ");
                 userDeck[i + 8] = remainRandomCard(gameDeckColor, remainingCard, sign);
             }
-            System.out.println();
         }
+        System.out.println("--------------------");
 
         // for computer
         for (int i = 0; i < 2; i++) {
             int b = r.nextInt(10);
-            System.out.println("* Randomly selected card is " + b + " *");
             System.out.println();
+            System.out.println("* Randomly selected card is " + b + " *");
 
             if (b == 0) {
                 System.out.println("Computer's Remaining Card is flip card! ");
@@ -98,11 +94,10 @@ public class Main {
                 System.out.println("Computer's Remain Card is ");
                 computerDeck[i + 8] = remainRandomCard(gameDeckColor, remainingCard, sign);
             }
-            System.out.println();
         }
-
+        System.out.println("--------------------");
+        System.out.println();
         fourCards(computerDeck, userDeck, computerHand, userHand);
-
         System.out.println();
 
         System.out.println("*** After the player and the computer are given 5 cards, the remaining game cards are as follows: ***");
@@ -118,261 +113,28 @@ public class Main {
         Card[] userBoard = new Card[9];
         Card[] computerBoard = new Card[9];
 
-
-        System.out.println("First, it is the player's turn and then it is the computer's turn.");
+        System.out.println("First, it is the player's turn and after it is the computer's turn.");
         System.out.println("If you want to draw a card from the game deck, enter 1");
         System.out.println("If you want to stand, enter 2 (if you stand, the turn passes to the other player)");
-
-        Scanner sc = new Scanner(System.in);
 
         for (int i = 0; i < userHand.length; i++) {
             System.out.println("Player's hand is: " + userHand[i]);
         }
         System.out.println();
         for (int i = 0; i < computerHand.length; i++) {
-            System.out.println("Computer's hand is: " + computerHand[i]);  // yerine xxxx yazıcaz
+            System.out.println("Computer's hand is: X");  // If we write computerHand [i], we can see the cards in the computer's hand.
         }
+        Scanner sc = new Scanner(System.in);
+            while (userPoint < 3 && computerPoint < 3) {
+                while (true) {
+                    System.out.println();
+                    System.out.print("Please enter your choice: ");
+                    int choice = sc.nextInt();
 
-        while (true){
-        while (userPoint < 3 && computerPoint < 3) {
-            while (true) {
-                System.out.println();
-                System.out.print("Please enter your choice: ");
-                int choice = sc.nextInt();
+                    if (choice == 1) {
+                        drawTopCard(Deck, userBoard);
+                        System.out.println("Sum = " + sum(userBoard));
 
-                if (choice == 1) {
-                    drawTopCard(Deck, userBoard);
-                    System.out.println("Sum = " + sum(userBoard));
-
-                    if (sum(userBoard) > 20) {
-                        System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
-                        computerPoint++;
-                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                        for (int i = 0; i < userBoard.length; i++) {
-                            userBoard[i] = null;
-                        }
-                        for (int j = 0; j < computerBoard.length; j++) {
-                            computerBoard[j] = null;
-                        }
-                        break;
-                    } else if (sum(userBoard) == 20) {
-                        System.out.println("You won this set! ");
-                        userPoint++;
-                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                        for (int i = 0; i < userBoard.length; i++) {
-                            userBoard[i] = null;
-                        }
-                        for (int j = 0; j < computerBoard.length; j++) {
-                            computerBoard[j] = null;
-                        }
-                        break;
-                    }
-                    System.out.println("If you want to draw a card from the Player Hand in your hand, enter 3");
-                    System.out.println("If you want to continue drawing cards from the Game Deck, enter any number except 3");
-                    int a = sc.nextInt();
-                    if (a == 3) {
-                        for (int i = 0; i < userHand.length; i++) {
-                            System.out.println("Player's hand is: " + userHand[i]);
-                        }
-                        System.out.println();
-                        System.out.println("If you want the 1st number, enter 1\n" +
-                                "If you want the 2nd number, enter 2\n" +
-                                "If you want the 3rd number, enter 3\n" +
-                                "If you want the 4th number, enter 4");
-
-                        int enter = sc.nextInt();
-                        if (enter == 1) {
-                            for (int i = 0; i < userBoard.length; i++) {
-                                if (userBoard[i] == null) {
-                                    userBoard[i] = userHand[0];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card you choose: " + userHand[0]);
-                            System.out.println("Sum is = " + sum(userBoard));
-
-                            if (userHand[0].getSpecial().equals("double")) {
-                                int dbl = sum(userBoard) * 2;
-                                System.out.println("New value is = " + dbl);
-                                int sum = dbl + sum(userBoard);
-                                System.out.println("Sum = " + sum);
-                                /*userHand[0] = drawTopCard(Deck,userBoard);
-                                System.out.println("New value is = " + userHand[0]);
-                                System.out.println("Sum = " + userHand[0] + sum(userBoard));
-                                 */
-                            }
-                            else if (userHand[0].getSpecial().equals("flip")) {
-                                int flip = sum(userBoard) * -1;
-                                System.out.println("New value is = " + flip);
-                                int sum = flip + sum(userBoard);
-                                System.out.println("Sum = " + sum);
-                            }
-                            if (sum(userBoard) > 20) {
-                                System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
-                                computerPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            } else if (sum(userBoard) == 20) {
-                                System.out.println("You won this set! ");
-                                userPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            }
-                            userHand[0] = null;
-
-                        } else if (enter == 2) {
-                            for (int i = 0; i < userBoard.length; i++) {
-                                if (userBoard[i] == null) {
-                                    userBoard[i] = userHand[1];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card you choose: " + userHand[1]);
-                            System.out.println("Sum is = " + sum(userBoard));
-
-                            if (userHand[1].getSpecial().equals("double")) {
-                                int dbl = sum(userBoard) * 2;
-                                System.out.println("New value is = " + dbl);
-                                int sum = dbl + sum(userBoard);
-                                System.out.println("Sum = " + sum);
-                            }
-                            else if (userHand[1].getSpecial().equals("flip")) {
-                                int flip = sum(userBoard) * -1;
-                                System.out.println("New value is = " + flip);
-                                int sum = flip + sum(userBoard);
-                                System.out.println("Sum = " + sum);
-                            }
-                            if (sum(userBoard) > 20) {
-                                System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
-                                computerPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            } else if (sum(userBoard) == 20) {
-                                System.out.println("You won this set! ");
-                                userPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            }
-                            userHand[1] = null;
-
-                        } else if (enter == 3) {
-                            for (int i = 0; i < userBoard.length; i++) {
-                                if (userBoard[i] == null) {
-                                    userBoard[i] = userHand[2];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card you choose: " + userHand[2]);
-                            System.out.println("Sum is = " + sum(userBoard));
-
-                            if (userHand[2].getSpecial().equals("double")) {
-                                int dbl = sum(userBoard) * 2;
-                                System.out.println("New value is = " + dbl);
-                                int sum = dbl + sum(userBoard);
-                                System.out.println("Sum = " + sum);
-                            }
-                            else if (userHand[2].getSpecial().equals("flip")) {
-                               int flip = sum(userBoard) * -1;
-                                System.out.println("New value is = " + flip);
-                                int sum = flip + sum(userBoard);
-                                System.out.println("Sum = " + sum);
-                            }
-                            if (sum(userBoard) > 20) {
-                                System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
-                                computerPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            } else if (sum(userBoard) == 20) {
-                                System.out.println("You won this set! ");
-                                userPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            }
-                            userHand[2] = null;
-
-                        } else if (enter == 4) {
-                            for (int i = 0; i < userBoard.length; i++) {
-                                if (userBoard[i] == null) {
-                                    userBoard[i] = userHand[3];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card you choose: " + userHand[3]);
-                            System.out.println("Sum is = " + sum(userBoard));
-
-                            if (userHand[3].getSpecial().equals("double")) {
-                                int dbl = sum(userBoard) * 2;
-                                System.out.println("New value is = " + dbl);
-                                int sum = dbl + sum(userBoard);
-                                System.out.println("Sum = " + sum);
-                            }
-                            else if (userHand[3].getSpecial().equals("flip")) {
-                                int flip = sum(userBoard) * -1;
-                                System.out.println("New value is = " + flip);
-                                int sum = flip + sum(userBoard);
-                                System.out.println("Sum = " + sum);
-                            }
-                            if (sum(userBoard) > 20) {
-                                System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
-                                computerPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            } else if (sum(userBoard) == 20) {
-                                System.out.println("You won this set! ");
-                                userPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            }
-                            userHand[3] = null;
-                        }
                         if (sum(userBoard) > 20) {
                             System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
                             computerPoint++;
@@ -396,47 +158,264 @@ public class Main {
                             }
                             break;
                         }
-                    }
-                    System.out.println();
-                    System.out.println("----- It is computer's turn. -----");
-                    System.out.println();
-                    if (sum1(computerBoard) <= 15) {
-                        drawTopCard2(Deck, computerBoard);
-                        System.out.println("Computer sum = " + sum1(computerBoard));
-                        if (sum1(computerBoard) > 20) {
-                            System.out.println("Computer's score is = " + sum1(computerBoard) + ". Computer busted, player won.");
-                            userPoint++;
-                            System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                            for (int i = 0; i < userBoard.length; i++) {
-                                userBoard[i] = null;
+                        System.out.println("If you want to draw a card from the Player Hand in your hand, enter 3");
+                        System.out.println("If you want to continue drawing cards from the Game Deck, enter any number except 3");
+                        int a = sc.nextInt();
+                        if (a == 3) {
+                            for (int i = 0; i < userHand.length; i++) {
+                                System.out.println("Player's hand is: " + userHand[i]);
                             }
-                            for (int j = 0; j < computerBoard.length; j++) {
-                                computerBoard[j] = null;
-                            }
-                            break;
-                        } else if (sum1(computerBoard) == 20) {
-                            System.out.println("Computer won this set!");
-                            computerPoint++;
-                            System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                            for (int i = 0; i < userBoard.length; i++) {
-                                userBoard[i] = null;
-                            }
-                            for (int j = 0; j < computerBoard.length; j++) {
-                                computerBoard[j] = null;
-                            }
-                            break;
-                        }
-                    } else if (sum1(computerBoard) > 15 && sum1(computerBoard) < 20) {
-                        drawTopCard2(Deck, computerBoard);
-                        System.out.println("Computer sum = " + sum1(computerBoard));
-                        for (int i = 0; i < computerHand.length; i++) {
-                            System.out.println("Computer's hand is: " + computerHand[i]);  // yerine xxxx yazıcaz
-                        }
-                        if (computerHand[0].getValue() + sum1(computerBoard) == 20) {
-                            System.out.println("Computer draws a card from the Computer Hand");
+                            System.out.println();
+                            System.out.println("If you want the 1st number, enter 1\n" +
+                                    "If you want the 2nd number, enter 2\n" +
+                                    "If you want the 3rd number, enter 3\n" +
+                                    "If you want the 4th number, enter 4");
 
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
+                            int enter = sc.nextInt();
+                            if (enter == 1) {
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    if (userBoard[i] == null) {
+                                        userBoard[i] = userHand[0];
+                                        break;
+                                    }
+                                }
+                                System.out.println("The card you choose: " + userHand[0]);
+                                System.out.println("Sum is = " + sum(userBoard));
+
+                                if (userHand[0].getSpecial().equals("double")) {
+                                    int dbl = sum(userBoard) * 2;
+                                    System.out.println("New value is = " + dbl);
+                                    int sum = dbl + sum(userBoard);
+                                    System.out.println("Sum = " + sum);
+                                } else if (userHand[0].getSpecial().equals("flip")) {
+                                    int flip = sum(userBoard) * -1;
+                                    System.out.println("New value is = " + flip);
+                                    int sum = flip + sum(userBoard);
+                                    System.out.println("Sum = " + sum);
+                                }
+                                if (sum(userBoard) > 20) {
+                                    System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
+                                    computerPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    break;
+                                } else if (sum(userBoard) == 20) {
+                                    System.out.println("You won this set! ");
+                                    userPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    break;
+                                }
+                                userHand[0] = null;
+
+                            } else if (enter == 2) {
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    if (userBoard[i] == null) {
+                                        userBoard[i] = userHand[1];
+                                        break;
+                                    }
+                                }
+                                System.out.println("The card you choose: " + userHand[1]);
+                                System.out.println("Sum is = " + sum(userBoard));
+
+                                if (userHand[1].getSpecial().equals("double")) {
+                                   int dbl = sum(userBoard) * 2;
+                                    System.out.println("New value is = " + dbl);
+                                    int sum = dbl + sum(userBoard);
+                                    System.out.println("Sum = " + sum);
+                                } else if (userHand[1].getSpecial().equals("flip")) {
+                                    int flip = sum(userBoard) * -1;
+                                    System.out.println("New value is = " + flip);
+                                    int sum = flip + sum(userBoard);
+                                    System.out.println("Sum = " + sum);
+                                }
+                                if (sum(userBoard) > 20) {
+                                    System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
+                                    computerPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    break;
+                                } else if (sum(userBoard) == 20) {
+                                    System.out.println("You won this set! ");
+                                    userPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    break;
+                                }
+                                userHand[1] = null;
+
+                            } else if (enter == 3) {
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    if (userBoard[i] == null) {
+                                        userBoard[i] = userHand[2];
+                                        break;
+                                    }
+                                }
+                                System.out.println("The card you choose: " + userHand[2]);
+                                System.out.println("Sum is = " + sum(userBoard));
+
+                                if (userHand[2].getSpecial().equals("double")) {
+                                    int dbl = sum(userBoard) * 2;
+                                    System.out.println("New value is = " + dbl);
+                                    int sum = dbl + sum(userBoard);
+                                    System.out.println("Sum = " + sum);
+                                } else if (userHand[2].getSpecial().equals("flip")) {
+                                    int flip = sum(userBoard) * -1;
+                                    System.out.println("New value is = " + flip);
+                                    int sum = flip + sum(userBoard);
+                                    System.out.println("Sum = " + sum);
+                                }
+                                if (sum(userBoard) > 20) {
+                                    System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
+                                    computerPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    break;
+                                } else if (sum(userBoard) == 20) {
+                                    System.out.println("You won this set! ");
+                                    userPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    break;
+                                }
+                                userHand[2] = null;
+
+                            } else if (enter == 4) {
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    if (userBoard[i] == null) {
+                                        userBoard[i] = userHand[3];
+                                        break;
+                                    }
+                                }
+                                System.out.println("The card you choose: " + userHand[3]);
+                                System.out.println("Sum is = " + sum(userBoard));
+
+                                if (userHand[3].getSpecial().equals("double")) {
+                                    int dbl = sum(userBoard) * 2;
+                                    System.out.println("New value is = " + dbl);
+                                    int sum = dbl + sum(userBoard);
+                                    System.out.println("Sum = " + sum);
+                                } else if (userHand[3].getSpecial().equals("flip")) {
+                                    int flip = sum(userBoard) * -1;
+                                    System.out.println("New value is = " + flip);
+                                    int sum = flip + sum(userBoard);
+                                    System.out.println("Sum = " + sum);
+                                }
+                                if (sum(userBoard) > 20) {
+                                    System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
+                                    computerPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    break;
+                                } else if (sum(userBoard) == 20) {
+                                    System.out.println("You won this set! ");
+                                    userPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    break;
+                                }
+                                userHand[3] = null;
+                            }
+                            if (sum(userBoard) > 20) {
+                                System.out.println("Your score is = " + sum(userBoard) + ". You busted, computer won. ");
+                                computerPoint++;
+                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    userBoard[i] = null;
+                                }
+                                for (int j = 0; j < computerBoard.length; j++) {
+                                    computerBoard[j] = null;
+                                }
+                                break;
+                            } else if (sum(userBoard) == 20) {
+                                System.out.println("You won this set! ");
+                                userPoint++;
+                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    userBoard[i] = null;
+                                }
+                                for (int j = 0; j < computerBoard.length; j++) {
+                                    computerBoard[j] = null;
+                                }
+                                break;
+                            }
+                        }
+                        System.out.println();
+                        System.out.println("----- It is computer's turn. -----");
+                        System.out.println();
+                        if (sum1(computerBoard) <= 15) {
+                            drawTopCard2(Deck, computerBoard);
+                            System.out.println("Computer sum = " + sum1(computerBoard));
+                            if (sum1(computerBoard) > 20) {
+                                System.out.println("Computer's score is = " + sum1(computerBoard) + ". Computer busted, player won.");
+                                userPoint++;
+                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    userBoard[i] = null;
+                                }
+                                for (int j = 0; j < computerBoard.length; j++) {
+                                    computerBoard[j] = null;
+                                }
+                                break;
+                            } else if (sum1(computerBoard) == 20) {
+                                System.out.println("Computer won this set!");
+                                computerPoint++;
+                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    userBoard[i] = null;
+                                }
+                                for (int j = 0; j < computerBoard.length; j++) {
+                                    computerBoard[j] = null;
+                                }
+                                break;
+                            }
+                        } else if (sum1(computerBoard) > 15 && sum1(computerBoard) < 17) {
+                            System.out.println("Computer sum = " + sum1(computerBoard));
+
+                            if (computerHand[0].getValue() + sum1(computerBoard) == 20) {
+                                System.out.println("Computer draws a card from the Computer Hand");
+                                for (int i = 0; i < computerBoard.length; i++) {
+                                    if (computerBoard[i] == null) {
                                     computerBoard[i] = computerHand[0];
                                     break;
                                 }
@@ -454,7 +433,6 @@ public class Main {
                             }
                             computerHand[0] = null;
                             break;
-
                         } else if (computerHand[1].getValue() + sum1(computerBoard) == 20) {
                             System.out.println("Computer draws a card from the Computer Hand");
                             for (int i = 0; i < computerBoard.length; i++) {
@@ -518,64 +496,11 @@ public class Main {
                             }
                             computerHand[3] = null;
                             break;
-                        } else {
-                            System.out.println("Computer chose to stand.");
-                            if (sum(userBoard) > sum1(computerBoard)) {
-                                System.out.println("The player's score is greater than the computer");
-                                userPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
                             } else {
-                                System.out.println("The computer's score is greater than the player");
-                                computerPoint++;
-                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                                for (int i = 0; i < userBoard.length; i++) {
-                                    userBoard[i] = null;
-                                }
-                                for (int j = 0; j < computerBoard.length; j++) {
-                                    computerBoard[j] = null;
-                                }
-                                break;
-                            }
-                        }
-                    } else if (sum1(computerBoard) > 20) {
-                        System.out.println("Computer's score is = " + sum1(computerBoard) + ". Computer busted, player won.");
-                        userPoint++;
-                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                        for (int i = 0; i < userBoard.length; i++) {
-                            userBoard[i] = null;
-                        }
-                        for (int j = 0; j < computerBoard.length; j++) {
-                            computerBoard[j] = null;
-                        }
-                        break;
-                    } else if (sum1(computerBoard) == 20) {
-                        System.out.println("Computer won this set!");
-                        computerPoint++;
-                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                        for (int i = 0; i < userBoard.length; i++) {
-                            userBoard[i] = null;
-                        }
-                        for (int j = 0; j < computerBoard.length; j++) {
-                            computerBoard[j] = null;
-                        }
-                        break;
-                    }
-                    System.out.println();
-                    System.out.println("----- It is player's turn. -----");
+                                System.out.println("Computer chose to stand.");
 
-                } else if (choice == 2) {
-                    System.out.println("----- Your turn is over, it is computer's turn. -----");
-                    if (sum1(computerBoard) <= 15) {
-                        drawTopCard2(Deck, computerBoard);
-                        System.out.println("Computer sum = " + sum1(computerBoard));
-                        if (sum1(computerBoard) > 20) {
+                            }
+                        } else if (sum1(computerBoard) > 20) {
                             System.out.println("Computer's score is = " + sum1(computerBoard) + ". Computer busted, player won.");
                             userPoint++;
                             System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
@@ -597,7 +522,210 @@ public class Main {
                                 computerBoard[j] = null;
                             }
                             break;
-                        } else if (sum1(computerBoard)<20) {
+                        } else {
+                            System.out.println("Computer chose to stand.");
+                            break;
+                        }
+                        System.out.println();
+                        System.out.println("----- It is player's turn. -----");
+
+                    } else if (choice == 2) {
+                        System.out.println("----- Your turn is over, it is computer's turn. -----");
+                        if (sum1(computerBoard) <= 15) {
+                            drawTopCard2(Deck, computerBoard);
+                            System.out.println("Computer sum = " + sum1(computerBoard));
+                            if (sum1(computerBoard) > 20) {
+                                System.out.println("Computer's score is = " + sum1(computerBoard) + ". Computer busted, player won.");
+                                userPoint++;
+                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    userBoard[i] = null;
+                                }
+                                for (int j = 0; j < computerBoard.length; j++) {
+                                    computerBoard[j] = null;
+                                }
+                                break;
+                            } else if (sum1(computerBoard) == 20) {
+                                System.out.println("Computer won this set!");
+                                computerPoint++;
+                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    userBoard[i] = null;
+                                }
+                                for (int j = 0; j < computerBoard.length; j++) {
+                                    computerBoard[j] = null;
+                                }
+                                break;
+                            } else if (sum1(computerBoard) < 20) {
+                                if (computerHand[0].getValue() + sum1(computerBoard) == 20) {
+                                    System.out.println("Computer draws a card from the Computer Hand");
+                                    for (int i = 0; i < computerBoard.length; i++) {
+                                        if (computerBoard[i] == null) {
+                                            computerBoard[i] = computerHand[0];
+                                            break;
+                                        }
+                                    }
+                                    System.out.println("The card taken by computer: " + computerHand[0]);
+                                    System.out.println("Sum is = " + sum1(computerBoard));
+                                    System.out.println("Computer won this set!");
+                                    computerPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    computerHand[0] = null;
+                                    break;
+
+                                } else if (computerHand[1].getValue() + sum1(computerBoard) == 20) {
+                                    System.out.println("Computer draws a card from the Computer Hand");
+                                    for (int i = 0; i < computerBoard.length; i++) {
+                                        if (computerBoard[i] == null) {
+                                            computerBoard[i] = computerHand[1];
+                                            break;
+                                        }
+                                    }
+                                    System.out.println("The card taken by computer: " + computerHand[1]);
+                                    System.out.println("Sum is = " + sum1(computerBoard));
+                                    System.out.println("Computer won this set!");
+                                    computerPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    computerHand[1] = null;
+                                    break;
+                                } else if (computerHand[2].getValue() + sum1(computerBoard) == 20) {
+                                    System.out.println("Computer draws a card from the Computer Hand");
+                                    for (int i = 0; i < computerBoard.length; i++) {
+                                        if (computerBoard[i] == null) {
+                                            computerBoard[i] = computerHand[2];
+                                            break;
+                                        }
+                                    }
+                                    System.out.println("The card taken by computer: " + computerHand[2]);
+                                    System.out.println("Sum is = " + sum1(computerBoard));
+                                    System.out.println("Computer won this set!");
+                                    computerPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    computerHand[2] = null;
+                                    break;
+                                } else if (computerHand[3].getValue() + sum1(computerBoard) == 20) {
+                                    System.out.println("Computer draws a card from the Computer Hand");
+                                    for (int i = 0; i < computerBoard.length; i++) {
+                                        if (computerBoard[i] == null) {
+                                            computerBoard[i] = computerHand[3];
+                                            break;
+                                        }
+                                    }
+                                    System.out.println("The card taken by computer: " + computerHand[3]);
+                                    System.out.println("Sum is = " + sum1(computerBoard));
+                                    System.out.println("Computer won this set!");
+                                    computerPoint++;
+                                    System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                    for (int i = 0; i < userBoard.length; i++) {
+                                        userBoard[i] = null;
+                                    }
+                                    for (int j = 0; j < computerBoard.length; j++) {
+                                        computerBoard[j] = null;
+                                    }
+                                    computerHand[3] = null;
+                                    break;
+                                } else if (computerHand[0].getValue() + sum1(computerBoard) < 20) {
+                                    for (int i = 0; i < computerBoard.length; i++) {
+                                        if (computerBoard[i] == null) {
+                                            computerBoard[i] = computerHand[0];
+                                            break;
+                                        }
+                                    }
+                                    System.out.println("The card taken by computer: " + computerHand[0]);
+                                    System.out.println("Sum is = " + sum1(computerBoard));
+                                    computerHand[0] = null;
+                                    break;
+                                } else if (computerHand[1].getValue() + sum1(computerBoard) < 20) {
+                                    for (int i = 0; i < computerBoard.length; i++) {
+                                        if (computerBoard[i] == null) {
+                                            computerBoard[i] = computerHand[1];
+                                            break;
+                                        }
+                                    }
+                                    System.out.println("The card taken by computer: " + computerHand[1]);
+                                    System.out.println("Sum is = " + sum1(computerBoard));
+                                    computerHand[1] = null;
+                                    break;
+                                } else if (computerHand[2].getValue() + sum1(computerBoard) < 20) {
+                                    for (int i = 0; i < computerBoard.length; i++) {
+                                        if (computerBoard[i] == null) {
+                                            computerBoard[i] = computerHand[2];
+                                            break;
+                                        }
+                                    }
+                                    System.out.println("The card taken by computer: " + computerHand[2]);
+                                    System.out.println("Sum is = " + sum1(computerBoard));
+                                    computerHand[2] = null;
+                                    break;
+                                } else if (computerHand[3].getValue() + sum1(computerBoard) < 20) {
+                                    for (int i = 0; i < computerBoard.length; i++) {
+                                        if (computerBoard[i] == null) {
+                                            computerBoard[i] = computerHand[3];
+                                            break;
+                                        }
+                                    }
+                                    System.out.println("The card taken by computer: " + computerHand[3]);
+                                    System.out.println("Sum is = " + sum1(computerBoard));
+                                    computerHand[3] = null;
+                                    break;
+                                } else {
+                                    System.out.println("Computer chose to stand.");
+                                    if (sum(userBoard) > sum1(computerBoard)) {
+                                        System.out.println("The player's score is greater than the computer");
+                                        userPoint++;
+                                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                        for (int i = 0; i < userBoard.length; i++) {
+                                            userBoard[i] = null;
+                                        }
+                                        for (int j = 0; j < computerBoard.length; j++) {
+                                            computerBoard[j] = null;
+                                        }
+                                        break;
+                                    } else if (sum(userBoard) < sum1(computerBoard)) {
+                                        System.out.println("The computer's score is greater than the player");
+                                        computerPoint++;
+                                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                        for (int i = 0; i < userBoard.length; i++) {
+                                            userBoard[i] = null;
+                                        }
+                                        for (int j = 0; j < computerBoard.length; j++) {
+                                            computerBoard[j] = null;
+                                        }
+                                        break;
+                                    } else {
+                                        System.out.println("The game ended in a draw.");
+                                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                        for (int i = 0; i < userBoard.length; i++) {
+                                            userBoard[i] = null;
+                                        }
+                                        for (int j = 0; j < computerBoard.length; j++) {
+                                            computerBoard[j] = null;
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        } else if (sum1(computerBoard) > 15 && sum1(computerBoard) < 17) {
+                            System.out.println("Computer sum = " + sum1(computerBoard));
+
                             if (computerHand[0].getValue() + sum1(computerBoard) == 20) {
                                 System.out.println("Computer draws a card from the Computer Hand");
                                 for (int i = 0; i < computerBoard.length; i++) {
@@ -727,8 +855,7 @@ public class Main {
                                 System.out.println("Sum is = " + sum1(computerBoard));
                                 computerHand[3] = null;
                                 break;
-                            }
-                            else {
+                            } else {
                                 System.out.println("Computer chose to stand.");
                                 if (sum(userBoard) > sum1(computerBoard)) {
                                     System.out.println("The player's score is greater than the computer");
@@ -754,21 +881,18 @@ public class Main {
                                     break;
                                 }
                             }
-                        }
-                    } else if (sum1(computerBoard) > 15 && sum1(computerBoard) < 17) {   //&& sum1(computerBoard) < 17
-                        System.out.println("Computer sum = " + sum1(computerBoard));
-
-                        if (computerHand[0].getValue() + sum1(computerBoard) == 20) {
-                            System.out.println("Computer draws a card from the Computer Hand");
-                            // System.out.println("Sum = " + sum1(computerBoard));
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
-                                    computerBoard[i] = computerHand[0];
-                                    break;
-                                }
+                        } else if (sum1(computerBoard) > 20) {
+                            System.out.println("Computer's score is = " + sum1(computerBoard) + ". Computer busted, player won.");
+                            userPoint++;
+                            System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                            for (int i = 0; i < userBoard.length; i++) {
+                                userBoard[i] = null;
                             }
-                            System.out.println("The card taken by computer: " + computerHand[0]);
-                            System.out.println("Sum is = " + sum1(computerBoard));
+                            for (int j = 0; j < computerBoard.length; j++) {
+                                computerBoard[j] = null;
+                            }
+                            break;
+                        } else if (sum1(computerBoard) == 20) {
                             System.out.println("Computer won this set!");
                             computerPoint++;
                             System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
@@ -778,117 +902,8 @@ public class Main {
                             for (int j = 0; j < computerBoard.length; j++) {
                                 computerBoard[j] = null;
                             }
-                            computerHand[0] = null;
                             break;
-
-                        } else if (computerHand[1].getValue() + sum1(computerBoard) == 20) {
-                            System.out.println("Computer draws a card from the Computer Hand");
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
-                                    computerBoard[i] = computerHand[1];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card taken by computer: " + computerHand[1]);
-                            System.out.println("Sum is = " + sum1(computerBoard));
-                            System.out.println("Computer won this set!");
-                            computerPoint++;
-                            System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                            for (int i = 0; i < userBoard.length; i++) {
-                                userBoard[i] = null;
-                            }
-                            for (int j = 0; j < computerBoard.length; j++) {
-                                computerBoard[j] = null;
-                            }
-                            computerHand[1] = null;
-                            break;
-                        } else if (computerHand[2].getValue() + sum1(computerBoard) == 20) {
-                            System.out.println("Computer draws a card from the Computer Hand");
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
-                                    computerBoard[i] = computerHand[2];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card taken by computer: " + computerHand[2]);
-                            System.out.println("Sum is = " + sum1(computerBoard));
-                            System.out.println("Computer won this set!");
-                            computerPoint++;
-                            System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                            for (int i = 0; i < userBoard.length; i++) {
-                                userBoard[i] = null;
-                            }
-                            for (int j = 0; j < computerBoard.length; j++) {
-                                computerBoard[j] = null;
-                            }
-                            computerHand[2] = null;
-                            break;
-                        } else if (computerHand[3].getValue() + sum1(computerBoard) == 20) {
-                            System.out.println("Computer draws a card from the Computer Hand");
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
-                                    computerBoard[i] = computerHand[3];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card taken by computer: " + computerHand[3]);
-                            System.out.println("Sum is = " + sum1(computerBoard));
-                            System.out.println("Computer won this set!");
-                            computerPoint++;
-                            System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                            for (int i = 0; i < userBoard.length; i++) {
-                                userBoard[i] = null;
-                            }
-                            for (int j = 0; j < computerBoard.length; j++) {
-                                computerBoard[j] = null;
-                            }
-                            computerHand[3] = null;
-                            break;
-                        } else if (computerHand[0].getValue() + sum1(computerBoard) < 20) {
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
-                                    computerBoard[i] = computerHand[0];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card taken by computer: " + computerHand[0]);
-                            System.out.println("Sum is = " + sum1(computerBoard));
-                            computerHand[0] = null;
-                            break;
-                        } else if (computerHand[1].getValue() + sum1(computerBoard) < 20) {
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
-                                    computerBoard[i] = computerHand[1];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card taken by computer: " + computerHand[1]);
-                            System.out.println("Sum is = " + sum1(computerBoard));
-                            computerHand[1] = null;
-                            break;
-                        } else if (computerHand[2].getValue() + sum1(computerBoard) < 20) {
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
-                                    computerBoard[i] = computerHand[2];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card taken by computer: " + computerHand[2]);
-                            System.out.println("Sum is = " + sum1(computerBoard));
-                            computerHand[2] = null;
-                            break;
-                        } else if (computerHand[3].getValue() + sum1(computerBoard) < 20) {
-                            for (int i = 0; i < computerBoard.length; i++) {
-                                if (computerBoard[i] == null) {
-                                    computerBoard[i] = computerHand[3];
-                                    break;
-                                }
-                            }
-                            System.out.println("The card taken by computer: " + computerHand[3]);
-                            System.out.println("Sum is = " + sum1(computerBoard));
-                            computerHand[3] = null;
-                            break;
-                        } else { ///////
+                        } else {
                             System.out.println("Computer chose to stand.");
                             if (sum(userBoard) > sum1(computerBoard)) {
                                 System.out.println("The player's score is greater than the computer");
@@ -901,7 +916,7 @@ public class Main {
                                     computerBoard[j] = null;
                                 }
                                 break;
-                            } else {
+                            } else if (sum(userBoard) < sum1(computerBoard)) {
                                 System.out.println("The computer's score is greater than the player");
                                 computerPoint++;
                                 System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
@@ -912,61 +927,22 @@ public class Main {
                                     computerBoard[j] = null;
                                 }
                                 break;
+                            } else {
+                                System.out.println("The game ended in a draw.");
+                                System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
+                                for (int i = 0; i < userBoard.length; i++) {
+                                    userBoard[i] = null;
+                                }
+                                for (int j = 0; j < computerBoard.length; j++) {
+                                    computerBoard[j] = null;
+                                }
+                                break;
                             }
-                        }
-                    } else if (sum1(computerBoard) > 20) {
-                        System.out.println("Computer's score is = " + sum1(computerBoard) + ". Computer busted, player won.");
-                        userPoint++;
-                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                        for (int i = 0; i < userBoard.length; i++) {
-                            userBoard[i] = null;
-                        }
-                        for (int j = 0; j < computerBoard.length; j++) {
-                            computerBoard[j] = null;
-                        }
-                        break;
-                    } else if (sum1(computerBoard) == 20) {
-                        System.out.println("Computer won this set!");
-                        computerPoint++;
-                        System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                        for (int i = 0; i < userBoard.length; i++) {
-                            userBoard[i] = null;
-                        }
-                        for (int j = 0; j < computerBoard.length; j++) {
-                            computerBoard[j] = null;
-                        }
-                        break;
-                    } else {
-                        System.out.println("Computer chose to stand.");
-                        if (sum(userBoard) > sum1(computerBoard)) {
-                            System.out.println("The player's score is greater than the computer");
-                            userPoint++;
-                            System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                            for (int i = 0; i < userBoard.length; i++) {
-                                userBoard[i] = null;
-                            }
-                            for (int j = 0; j < computerBoard.length; j++) {
-                                computerBoard[j] = null;
-                            }
-                            break;
-                        } else {
-                            System.out.println("The computer's score is greater than the player");
-                            computerPoint++;
-                            System.out.println("Player's Score = " + userPoint + " , Computer's Score = " + computerPoint);
-                            for (int i = 0; i < userBoard.length; i++) {
-                                userBoard[i] = null;
-                            }
-                            for (int j = 0; j < computerBoard.length; j++) {
-                                computerBoard[j] = null;
-                            }
-                            break;
                         }
                     }
                 }
-            }
-        }
-        System.out.println("Game Over");  // while(true) bitişi
-    }
+            } System.out.println("----------- Game Over ----------");
+
     }
     public static void Shuffle(Card[] Deck) {
         Random r = new Random();
@@ -976,13 +952,11 @@ public class Main {
             Swap(Deck, a, b);
         }
     }
-
     public static void Swap(Card[] Deck, int i, int j) {
         Card temp = Deck[i];
         Deck[i] = Deck[j];
         Deck[j] = temp;
     }
-
     public static void Dealing(Card [] Deck, Card [] computerDeck, Card [] userDeck){
         System.out.println();
         System.out.println("**********  Cards are dealing...  **********");
@@ -1000,7 +974,6 @@ public class Main {
             System.out.println("Player Cards are = " + userDeck[39-k]);
         }
     }
-
     public static Card remainRandomCard(String[] colors, int[] values, int [] signs) {
         Random r = new Random();
 
@@ -1013,7 +986,6 @@ public class Main {
 
     }
     public static void fourCards(Card[] computerDeck,Card[] userDeck, Card[] computerHand,Card[] userHand ){
-        Random r = new Random();
         System.out.println("Total 10 arrays for computer : ");
         for (int i=0; i< computerDeck.length; i++){
             System.out.println(computerDeck[i]);
@@ -1024,8 +996,7 @@ public class Main {
         System.out.println("Shuffling the computer deck: ");
         for (int c = 0; c < computerDeck.length; c++) {     // Checking to see if it is shuffled
             System.out.println(computerDeck[c]);
-            System.out.println();
-        }
+        } System.out.println();
 
         System.out.println("The four cards chosen for the computer are: ");
         for (int a=0; a<computerHand.length; a++){
@@ -1050,8 +1021,7 @@ public class Main {
         System.out.println("Shuffling the player deck: ");
         for (int c = 0; c < userDeck.length; c++) {     // Checking to see if it is shuffled
             System.out.println(userDeck[c]);
-            System.out.println();
-        }
+        } System.out.println();
 
         System.out.println("The four cards chosen for the player are: ");
         for (int a=0; a<userHand.length; a++) {
@@ -1095,12 +1065,10 @@ public class Main {
                 }
             }
             System.out.println(drawnCard);
-           // System.out.println("Sum = " + sum(userBoard));
         } else {
             System.out.println("Cards sold out.");
         }
     }
-
     public static int gameDeckTop2=4;
     public static void drawTopCard2(Card [] Deck, Card[] computerBoard) {
         if (gameDeckTop2 < Deck.length - 5) {
@@ -1113,12 +1081,10 @@ public class Main {
                 }
             }
             System.out.println(drawnCard);
-           // System.out.println("Sum = " + sum(computerBoard));
         } else {
             System.out.println("Cards sold out.");
         }
     }
-
     public static int sum (Card [] userBoard){
         int sum = 0;
         for (Card c: userBoard){
@@ -1135,9 +1101,4 @@ public class Main {
             }
         } return sum;
     }
-   /* public static Card getLastCardOnBoard (Card[] userBoard, Card[] Deck) {
-        userBoard[userBoard.length-1] = drawTopCard(Deck,userBoard);
-        return userBoard[userBoard.length-1];
-    }
-    */
 }

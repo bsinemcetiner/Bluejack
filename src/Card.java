@@ -1,8 +1,6 @@
 public class Card {
     private String gameDeckColor;
     private int gameDeck;
-    private int remainingCard;
-
     private int sign;
     private String special;
 
@@ -25,10 +23,10 @@ public class Card {
 
         this.gameDeck = gameDeck;
     }
-    public int getDouble(){   //double için
+    public int getDouble(){   // for double
         return gameDeck*sign*2;
     }
-    public int getFlip(){
+    public int getFlip(){   // for flip
         return gameDeck*sign*-1;
     }
 
